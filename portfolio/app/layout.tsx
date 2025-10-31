@@ -3,7 +3,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
 export const metadata = {
-  title: 'Andy F Portfolio',
+  title: 'Andy Faneva Hasintsoa',
   description: 'Portfolio minimaliste et technique',
 };
 

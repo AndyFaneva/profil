@@ -6,6 +6,7 @@ import { ArrowDownIcon, ArrowTopRightOnSquareIcon, InformationCircleIcon, } from
 import {  LinkedinIcon, FacebookIcon, GithubIcon, Phone, Facebook, ArrowRightIcon} from 'lucide-react';
 import { Mail, MapPin, Github, Linkedin } from "lucide-react";
 import Modal from "./components/Modal";
+import Intro from "./components/Intro";
 
 interface Star {
   width: string;
@@ -226,7 +227,19 @@ export default function Home() {
   const [activeCard, setActiveCard] = useState<number | null>(null);
  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 const [stars, setStars] = useState<Star[]>([]);
+  const [showIntro, setShowIntro] = useState(false);
+  
 
+  useEffect(() => {
+    const visited = localStorage.getItem("visited");
+    if (!visited) {
+      setShowIntro(true);
+      localStorage.setItem("visited", "true");
+
+      const timer = setTimeout(() => setShowIntro(true), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
 useEffect(() => {
   const generated: Star[] = Array.from({ length: 50 }, () => ({
@@ -329,7 +342,11 @@ useEffect(() => {
   return () => window.removeEventListener("resize", handleResize);
 }, []);
 
-
+  useEffect(() => {
+    if (!showIntro) return;
+    const timer = setTimeout(() => setShowIntro(false), 3000); // 3s intro
+    return () => clearTimeout(timer);
+  }, [showIntro]);
 useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % images.length);
@@ -337,7 +354,10 @@ useEffect(() => {
     return () => clearInterval(interval);
   }, []);
   return (
-    <main className="mt-16">
+        <>
+<Intro visible={showIntro} />
+{!showIntro && 
+    <main>
       {/* Accueil */}
 <section
   id="home"
@@ -892,6 +912,7 @@ Each line of code I write is a step toward a smarter, more connected world.
         </div>
       </motion.div>
     </section>
-    </main>
+    </main>}
+      </>
   );
 }
