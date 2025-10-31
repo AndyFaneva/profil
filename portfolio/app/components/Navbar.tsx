@@ -7,25 +7,26 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
 
-  useEffect(() => {
-    const sections = document.querySelectorAll("section[id]");
+useEffect(() => {
+  const sections = document.querySelectorAll<HTMLElement>("section[id]"); // ✅ préciser HTMLElement
+
   const handleScroll = () => {
-  let current = "home"; // fallback
-  sections.forEach((section) => {
-    const sectionTop = section.offsetTop - window.innerHeight / 2;
-    const sectionHeight = section.clientHeight;
-    if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
-      current = section.getAttribute("id")!;
-    }
-  });
-  setActiveSection(current);
-};
+    let current = "home"; // fallback
+    sections.forEach((section) => {
+      const sectionTop = section.offsetTop - window.innerHeight / 2;
+      const sectionHeight = section.clientHeight;
+      if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+        current = section.getAttribute("id")!;
+      }
+    });
+    setActiveSection(current);
+  };
 
+  window.addEventListener("scroll", handleScroll);
+  handleScroll(); // détecte la section au chargement
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // détecte la section au chargement
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const links = [
     { id: "home", label: "Home" },

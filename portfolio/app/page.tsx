@@ -7,6 +7,15 @@ import {  LinkedinIcon, FacebookIcon, GithubIcon, Phone, Facebook, ArrowRightIco
 import { Mail, MapPin, Github, Linkedin } from "lucide-react";
 import Modal from "./components/Modal";
 
+interface Star {
+  width: string;
+  height: string;
+  top: string;
+  left: string;
+  opacity: number;
+  animationDelay: string;
+}
+
 const projectsData = {
   projets: [
     {
@@ -110,90 +119,105 @@ const projectsData = {
       image: "/angular.png",
       description: "Description courte de l'autre projet 1.",
       link: "/autres/1",
+       date:"",
     },
  {
       title: "Autre projet 1",
       image: "/Arduino.png",
       description: "Description courte de l'autre projet 1.",
       link: "/autres/1",
+       date:"",
     },
      {
       title: "Autre projet 1",
       image: "/Java.png",
       description: "Description courte de l'autre projet 1.",
       link: "/autres/1",
+       date:"",
     },
      {
       title: "Autre projet 1",
       image: "/Lin.jpeg",
       description: "Description courte de l'autre projet 1.",
       link: "/autres/1",
+       date:"",
     },
      {
       title: "Autre projet 1",
       image: "/Mysql.jpeg",
       description: "Description courte de l'autre projet 1.",
       link: "/autres/1",
+       date:"",
     },
      {
       title: "Autre projet 1",
       image: "/Nest.png",
       description: "Description courte de l'autre projet 1.",
       link: "/autres/1",
+       date:"",
     },
      {
       title: "Autre projet 1",
       image: "/NEXT.png",
       description: "Description courte de l'autre projet 1.",
       link: "/autres/1",
+       date:"",
     },
     {
       title: "Autre projet 1",
       image: "/PY.png",
       description: "Description courte de l'autre projet 1.",
       link: "/autres/1",
+       date:"",
     },
     {
       title: "Autre projet 1",
       image: "/REACT.png",
       description: "Description courte de l'autre projet 1.",
       link: "/autres/1",
+       date:"",
     },
     {
       title: "Autre projet 1",
       image: "/RN.jpeg",
       description: "Description courte de l'autre projet 1.",
       link: "/autres/1",
+       date:"",
     },
     {
       title: "Autre projet 1",
       image: "/Win.png",
       description: "Description courte de l'autre projet 1.",
       link: "/autres/1",
+       date:"",
     },
     {
       title: "Autre projet 1",
       image: "/html.png",
       description: "Description courte de l'autre projet 1.",
       link: "/autres/1",
+       date:"",
     },
      {
       title: "Autre projet 1",
       image: "/css.png",
       description: "Description courte de l'autre projet 1.",
       link: "/autres/1",
+       date:"",
     },
      {
       title: "Autre projet 1",
       image: "/js.png",
       description: "Description courte de l'autre projet 1.",
       link: "/autres/1",
+       date:"",
     },
         {
       title: "Autre projet 1",
       image: "/LGC.png",
       description: "Description courte de l'autre projet 1.",
       link: "/autres/1",
+       date:"",
     },
   ],
 };
@@ -201,10 +225,11 @@ const projectsData = {
 export default function Home() {
   const [activeCard, setActiveCard] = useState<number | null>(null);
  const [selectedImage, setSelectedImage] = useState<string | null>(null);
- const [stars, setStars] = useState([]);
+const [stars, setStars] = useState<Star[]>([]);
+
 
 useEffect(() => {
-  const generated = Array.from({ length: 50 }, () => ({
+  const generated: Star[] = Array.from({ length: 50 }, () => ({
     width: `${Math.random() * 2 + 1}px`,
     height: `${Math.random() * 2 + 1}px`,
     top: `${Math.random() * 100}%`,
@@ -214,6 +239,7 @@ useEffect(() => {
   }));
   setStars(generated);
 }, []);
+
 
   const services = [
     {
@@ -285,7 +311,9 @@ useEffect(() => {
   }
 }, []);
 
-  const [activeTab, setActiveTab] = useState("projets");
+type TabKey = "projets" | "certificats" | "autres";
+const [activeTab, setActiveTab] = useState<TabKey>("projets");
+
 
   const tabs = [
     { id: "projets", label: "Projects" },
@@ -525,17 +553,17 @@ Each line of code I write is a step toward a smarter, more connected world.
       {/* --- Tabs --- */}
       <div className="flex gap-4 mb-8 bg-white/20 backdrop-blur-md rounded-2xl px-6 py-3 shadow-lg">
         {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`px-4 py-2 rounded-xl font-semibold transition-all ${
-              activeTab === tab.id
-                ? "bg-white/40 text-blue-900 shadow-inner"
-                : "text-white hover:bg-white/10"
-            }`}
-          >
-            {tab.label}
-          </button>
+     <button
+  key={tab.id}
+  onClick={() => setActiveTab(tab.id as TabKey)}
+  className={`px-4 py-2 rounded-xl font-semibold transition-all ${
+    activeTab === tab.id
+      ? "bg-white/40 text-blue-900 shadow-inner"
+      : "text-white hover:bg-white/10"
+  }`}
+>
+  {tab.label}
+</button>
         ))}
       </div>
 
@@ -559,78 +587,97 @@ Each line of code I write is a step toward a smarter, more connected world.
               }
             `}
           >
-            {projectsData[activeTab].map((item, index) => (
-              <motion.div
-                key={index}
-                className={`${
-                  activeTab === "autres"
-                    ? "p-0 bg-transparent shadow-none"
-                    : "bg-white/20 backdrop-blur-md p-4 rounded-2xl shadow flex flex-col"
-                }`}
-                whileHover={{ scale: 1.05 }}
-                onClick={
-                  activeTab === "certificats"
-                    ? () => setSelectedImage(item.image)
-                    : undefined
-                }
-              >
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className={`w-full object-cover rounded-xl ${
-                    activeTab === "autres"
-                      ? "h-0"
-                      : activeTab === "certificats"
-                      ? "h-32 cursor-pointer"
-                      : "h-48 mb-4"
-                  }`}
-                />
+        {projectsData[activeTab as keyof typeof projectsData].map(
+  (item, index) => {
+    // Pour TS : définir item en fonction du tab actif
+    const projectItem =
+      activeTab === "projets"
+        ? (item as typeof projectsData.projets[number])
+        : item;
+    const certItem =
+      activeTab === "certificats"
+        ? (item as typeof projectsData.certificats[number])
+        : item;
+    const otherItem =
+      activeTab === "autres"
+        ? (item as typeof projectsData.autres[number])
+        : item;
 
-                {/* --- Projets --- */}
-                {activeTab === "projets" && (
-                  <>
-                    <h3 className="text-lg font-bold mb-2">{item.title}</h3>
-                    <p className="text-gray-200 mb-2">{item.description}</p>
-                    <p className="text-gray-400 text-sm mb-4">📅 {item.date}</p>
+    return (
+      <motion.div
+        key={index}
+        className={`${
+          activeTab === "autres"
+            ? "p-0 bg-transparent shadow-none"
+            : "bg-white/20 backdrop-blur-md p-4 rounded-2xl shadow flex flex-col"
+        }`}
+        whileHover={{ scale: 1.05 }}
+        onClick={
+          activeTab === "certificats"
+            ? () => setSelectedImage(certItem.image)
+            : undefined
+        }
+      >
+        <img
+          src={item.image}
+          alt={item.title}
+          className={`w-full object-cover rounded-xl ${
+            activeTab === "autres"
+              ? "h-0"
+              : activeTab === "certificats"
+              ? "h-32 cursor-pointer"
+              : "h-48 mb-4"
+          }`}
+        />
 
-                    <div className=" flex justify-between ">
+        {/* --- Projets --- */}
+        {activeTab === "projets" && (
+          <>
+            <h3 className="text-lg font-bold mb-2">{projectItem.title}</h3>
+            <p className="text-gray-200 mb-2">{projectItem.description}</p>
+            <div className="flex justify-between items-center mb-4">
+  <p className="text-gray-400 text-sm">📅 {projectItem.date}</p>
   <a
-    href={item.liveDemo}
-    target="_blank"
-    rel="noopener noreferrer"
+  href={item.link}
+    className="flex items-center justify-center bg-blue-500/30 backdrop-blur-md border border-white/20 text-white w-8 h-8 rounded-full hover:bg-blue-500/50 transition"
+ 
   >
+    <ArrowTopRightOnSquareIcon className="w-4 h-4" />
   </a>
-  <a
-    href={item.link}
+</div>
+          </>
+        )}
+
+        {/* --- Certificats --- */}
+        {activeTab === "certificats" && (
+          <>
+            <h3 className="text-base font-semibold mt-3">{certItem.title}</h3>
+             <div className="flex justify-between items-center mb-4">
+               <p className="text-gray-300 text-sm">{certItem.description}</p>
+              <a
     className="flex items-center justify-center bg-blue-500/30 backdrop-blur-md border border-white/20 text-white w-8 h-8 rounded-full hover:bg-blue-500/50 transition"
   >
    <ArrowTopRightOnSquareIcon className="w-4 h-4" />
   </a>
-</div>
+             </div>
+          </>
+        )}
 
-                  </>
-                )}
+        {/* --- Autres (tech stack) --- */}
+        {activeTab === "autres" && (
+          <div className="flex justify-center items-center">
+            <img
+              src={otherItem.image}
+              alt={otherItem.title}
+              className="h-24 w-24 object-contain rounded-full"
+            />
+          </div>
+        )}
+      </motion.div>
+    );
+  }
+)}
 
-                {/* --- Certificats --- */}
-                {activeTab === "certificats" && (
-                  <>
-                    <h3 className="text-base font-semibold mt-3">{item.title}</h3>
-                    <p className="text-gray-300 text-sm">{item.description}</p>
-                  </>
-                )}
-
-                {/* --- Autres (tech stack) --- */}
-                {activeTab === "autres" && (
-                  <div className="flex justify-center items-center">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="h-24 w-24 object-contain rounded-full"
-                    />
-                  </div>
-                )}
-              </motion.div>
-            ))}
           </motion.div>
         </AnimatePresence>
       </div>
